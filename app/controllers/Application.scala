@@ -18,7 +18,7 @@ class Application @Inject()(snackDao: SnackDAO) extends Controller {
 
   def index = Action.async {
     val f = snackDao.all()
-    f.map(snacks => Ok(views.html.index(snacks.head.name)))
+    f.map(snacks => Ok(views.html.index()))
   }
 
 }

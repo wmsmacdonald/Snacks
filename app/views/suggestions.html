@@ -1,0 +1,103 @@
+<!doctype html>
+<html class="no-js" lang="en-us">
+<head>
+    <!-- META DATA -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--[if IE]><meta http-equiv="cleartype" content="on" /><![endif]-->
+    <!-- SEO -->
+    <title>SnaFoo - Nerdery Snack Food Ordering System</title>
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="57x57" href="../../public/images/favicon/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../../public/images/favicon/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../../public/images/favicon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../../public/images/favicon/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../../public/images/favicon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../public/images/favicon/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../../public/images/favicon/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../public/images/favicon/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../public/images/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../../public/images/favicon/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="../../public/images/favicon/favicon-160x160.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../../public/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../public/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../public/images/favicon/favicon-16x16.png">
+    <meta name="msapplication-TileImage" content="assets/media/images/favicon/mstile-144x144.png">
+    <meta name="msapplication-TileColor" content="#ff0000">
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" media="screen, projection" href="../../public/stylesheets/modern.css" />
+</head>
+<body>
+    <div class="masthead" role="banner">
+        <div class="masthead-hd">
+            <h1 class="hdg hdg_1 mix-hdg_extraBold"><a href="index.scala.html">SnaFoo</a>
+            </h1>
+            <p class="masthead-hd-sub">Nerdery Snack Food Ordering System</p>
+        </div>
+        <div class="masthead-nav" role="navigation">
+            <ul>
+                <li><a href="index.scala.html">Voting</a>
+                </li>
+                <li><a href="suggestions.html">Suggestions</a>
+                </li>
+                <li><a href="shoppinglist.html">Shopping List</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="content" role="main">
+            <div class="shelf shelf_5">
+                <h2 class="hdg hdg_1">Suggestions</h2>
+            </div>
+            <div class="shelf shelf_2">
+                <div class="error isHidden">You have attempted to add more than the allowed number of suggestions per month!
+                    <br />There is a total of three allowed suggestions per month.</div>
+                <div class="error isHidden">You have attempted to add a suggestion that already exists!</div>
+                <div class="error isHidden">You have not completed information requested.</div>
+            </div>
+            <div class="content-centered">
+                <div class="shelf shelf_2">
+                    <form method="" action="" class="form" novalidate>
+                        <fieldset class="shelf shelf_2">
+                            <div class="shelf shelf_2">
+                                <div class="shelf">
+                                    <label for="snackOptions">
+                                        <h2 class="hdg hdg_2">Select a snack from the list</h2>
+                                    </label>
+                                </div>
+                                <select name="snackOptions" id="snackOptions">
+                                    <option value="snack1">snack suggestion 1</option>
+                                    <option value="snack2">snack suggestion 2</option>
+                                    <option value="snack3">snack suggestion 3</option>
+                                    <option value="snack4">snack suggestion 4</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                        <div class="shelf shelf_5">
+                            <p class="hdg hdg_1">or</p>
+                        </div>
+                        <fieldset class="shelf shelf_5">
+                            <div class="shelf">
+                                <label for="suggestionInput">
+                                    <h2 class="hdg hdg_2">Enter new snack suggestion &amp; purchasing location</h2>
+                                </label>
+                            </div>
+                            <div class="shelf">
+                                <input type="text" id="suggestionInput" placeholder="Snack Suggestion" />
+                            </div>
+                            <div class="shelf">
+                                <label for="suggestionLocation" class="isHidden">Location</label>
+                                <input type="text" id="suggestionLocation" placeholder="Location" class="" />
+                            </div>
+                        </fieldset>
+                        <input type="submit" value="Suggest this Snack!" class="btn">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /wrapper -->
+</body>
+</html>
