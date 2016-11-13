@@ -6,7 +6,7 @@ lazy val `snafoo` = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.7"
 
-libraryDependencies ++= Seq( jdbc , cache , ws   , specs2 % Test, "org.xerial" % "sqlite-jdbc" % "3.8.11.2")
+libraryDependencies ++= Seq(cache , ws   , specs2 % Test, "org.xerial" % "sqlite-jdbc" % "3.8.11.2", "com.typesafe.play" %% "play-slick" % "2.0.0")
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
