@@ -1,3 +1,4 @@
+@(snacks: Seq[Snack])
 <!doctype html>
 <html class="no-js" lang="en-us">
 <head>
@@ -98,42 +99,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Donuts</td>
-                                    <td>26</td>
-                                    <td>
-                                        <button class="btn btn_clear"><i class="icon-check icon-check_voted"></i>
-                                        </button>
-                                    </td>
-                                    <td>12/1/14</td>
-                                </tr>
-                                <tr>
-                                    <td>Spam</td>
-                                    <td>10</td>
-                                    <td>
-                                        <button class="btn btn_clear"><i class="icon-check icon-check_noVote"></i>
-                                        </button>
-                                    </td>
-                                    <td>12/1/14</td>
-                                </tr>
-                                <tr>
-                                    <td>Buckets of M&amp;M's</td>
-                                    <td>38</td>
-                                    <td>
-                                        <button class="btn btn_clear"><i class="icon-check icon-check_noVote"></i>
-                                        </button>
-                                    </td>
-                                    <td>12/1/14</td>
-                                </tr>
-                                <tr>
-                                    <td>Pistachios</td>
-                                    <td>5</td>
-                                    <td>
-                                        <button class="btn btn_clear"><i class="icon-check icon-check_noVote"></i>
-                                        </button>
-                                    </td>
-                                    <td>10/1/14</td>
-                                </tr>
+                                @for(snack <- snacks) {
+                                    <tr>
+                                        <td>@snack.id</td>
+                                        <td>@snack.votes</td>
+                                        <td>
+                                            <button class="btn btn_clear"><i class="icon-check icon-check_voted"></i>
+                                            </button>
+                                        </td>
+                                        <td>12/1/14</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>

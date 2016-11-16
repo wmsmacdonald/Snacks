@@ -18,7 +18,12 @@ class Application @Inject()(snackDao: SnackDAO) extends Controller {
 
   def index = Action.async {
     val f = snackDao.all()
-    f.map(snacks => Ok(views.html.index()))
+    f.map(snacks => Ok(views.html.index(snacks)))
+  }
+
+  def vote = Action.async { request =>
+    val a = snackDao.vote(request.queryString("id").head.toInt)
+    a.map(r => Ok("success"))
   }
 
 }
