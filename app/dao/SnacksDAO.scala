@@ -1,38 +1,25 @@
 package dao
+
+import models.ServiceSnack
+
 import scala.concurrent.Future
-
 import javax.inject.Inject
-import models.Snack
-import play.api.db.slick.DatabaseConfigProvider
-import play.api.db.slick.HasDatabaseConfigProvider
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import slick.driver.JdbcProfile
 
-trait SnacksComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
-  import driver.api._
+import play.api.libs.ws._
+import play.api.libs.json._
 
-  class Snacks(tag: Tag) extends Table[Snack](tag, "SUGGESTED_SNACKS") {
-    def id = column[Int]("ID")
-    def dateSuggested = column[String]("DATE_SUGGESTED")
-    def votes = column[Int]("VOTES")
+import scala.util.{Failure, Success, Try}
 
-    def * = (id, dateSuggested, votes) <> (Snack.tupled, Snack.unapply _)
-  }
-}
+class SnacksDAO @Inject()(ws: WSClient) {
+  implicit val context = play.api.libs.concurrent.Execution.Implicits.defaultContext
+  def all(): Future[Try[Seq[ServiceSnack]]] = {
+    val request: WSRequest = ws.url("https://api-snacks.nerderylabs.com/v1/snacks/")
+      .withQueryString("ApiKey" -> "6e766c67-4293-4004-8268-50855f355445")
 
-class SnackDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends SnacksComponent
-  with HasDatabaseConfigProvider[JdbcProfile] {
-
-  import driver.api._
-
-  val snacks = TableQuery[Snacks]
-
-  def all(): Future[Seq[Snack]] = db.run(snacks.result)
-
-  def insert(snack: Snack): Future[Unit] = db.run(snacks += snack).map { _ => () }
-
-  def vote(id: Int) = {
-    val a = sqlu"""UPDATE SUGGESTED_SNACKS SET VOTES = VOTES + 1 WHERE id=${id}"""
-    db.run(a)
+    implicit val snackReads = Json.reads[ServiceSnack]
+    for (response <- request.get()) yield response.json.validate[Seq[ServiceSnack]] match {
+      case JsSuccess(snacks,_) => Success(snacks)
+      case JsError(e) => Failure(new Exception("Failed to parse JSON" + response.body))
+    }
   }
 }

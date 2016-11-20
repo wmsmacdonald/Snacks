@@ -1,4 +1,4 @@
-@(snacks: Seq[Snack])
+@(alwaysPurchasedSnacks: Seq[ServiceSnack], suggestedSnacks: Seq[SnackDetailed])
 <!doctype html>
 <html class="no-js" lang="en-us">
 <head>
@@ -37,11 +37,11 @@
         </div>
         <div class="masthead-nav" role="navigation">
             <ul>
-                <li><a href="index.scala.html">Voting</a>
+                <li><a href="/">Voting</a>
                 </li>
-                <li><a href="suggestions.html">Suggestions</a>
+                <li><a href="/suggestions">Suggestions</a>
                 </li>
-                <li><a href="shoppinglist.html">Shopping List</a>
+                <li><a href="/shoppinglist">Shopping List</a>
                 </li>
             </ul>
         </div>
@@ -60,9 +60,7 @@
                         <h2 class="hdg hdg_3">Votes Remaining</h2>
                     </div>
                     <div class="voteBox-body">
-                        <p class="counter counter_green isHidden">3</p>
-                        <p class="counter counter_yellow">2</p>
-                        <p class="counter counter_red isHidden">1</p>
+                        <p class="counter"></p>
                     </div>
                 </div>
             </div>
@@ -75,11 +73,9 @@
                         <h2 class="hdg hdg_2 mix-hdg_centered ">Snacks Always Purchased</h2>
                     </div>
                     <ul class="list list_centered">
-                        <li>Pop Tarts</li>
-                        <li>Bagels</li>
-                        <li>Ramen Noodles</li>
-                        <li>Cereal</li>
-                        <li>Trail Mix</li>
+                        @for(snack <- alwaysPurchasedSnacks) {
+                           <li>@snack.name</li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -99,15 +95,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for(snack <- snacks) {
+                                @for(snack <- suggestedSnacks) {
                                     <tr>
-                                        <td>@snack.id</td>
+                                        <td>@snack.name</td>
                                         <td>@snack.votes</td>
                                         <td>
-                                            <button class="btn btn_clear"><i class="icon-check icon-check_voted"></i>
+                                            <button class="btn btn_clear vote_button" data-id="@snack.id">
+                                                <i class="icon-check icon-check_noVote"></i>
                                             </button>
                                         </td>
-                                        <td>12/1/14</td>
+                                        <td>@snack.lastPurchaseDate</td>
                                     </tr>
                                 }
                             </tbody>
@@ -119,5 +116,7 @@
         <!-- /content -->
     </div>
     <!-- /wrapper -->
+    <script type="text/javascript" src="/assets/javascripts/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="/assets/javascripts/voting.js"></script>
 </body>
 </html>
