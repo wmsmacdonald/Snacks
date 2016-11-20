@@ -5,6 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index
 GET     /snacks/vote                controllers.Snacks.vote
+POST    /snacks/create              controllers.Snacks.create
 GET     /shoppinglist               controllers.Application.shoppinglist
 GET     /suggestions                controllers.Application.suggestions
 

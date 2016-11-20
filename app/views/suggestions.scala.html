@@ -1,4 +1,4 @@
-@()
+@(suggestionNames: Seq[String])
 <!doctype html>
 <html class="no-js" lang="en-us">
 <head>
@@ -59,7 +59,7 @@
             </div>
             <div class="content-centered">
                 <div class="shelf shelf_2">
-                    <form method="" action="" class="form" novalidate>
+                    <form id="submit_form" class="form" novalidate>
                         <fieldset class="shelf shelf_2">
                             <div class="shelf shelf_2">
                                 <div class="shelf">
@@ -68,10 +68,9 @@
                                     </label>
                                 </div>
                                 <select name="snackOptions" id="snackOptions">
-                                    <option value="snack1">snack suggestion 1</option>
-                                    <option value="snack2">snack suggestion 2</option>
-                                    <option value="snack3">snack suggestion 3</option>
-                                    <option value="snack4">snack suggestion 4</option>
+                                    @for(name <- suggestionNames) {
+                                        <option value="@name">@name</option>
+                                    }
                                 </select>
                             </div>
                         </fieldset>

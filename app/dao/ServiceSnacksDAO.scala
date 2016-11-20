@@ -10,7 +10,7 @@ import play.api.libs.json._
 
 import scala.util.{Failure, Success, Try}
 
-class SnacksDAO @Inject()(ws: WSClient) {
+class ServiceSnacksDAO @Inject()(ws: WSClient) {
   implicit val context = play.api.libs.concurrent.Execution.Implicits.defaultContext
   def all(): Future[Try[Seq[ServiceSnack]]] = {
     val request: WSRequest = ws.url("https://api-snacks.nerderylabs.com/v1/snacks/")

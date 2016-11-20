@@ -21,7 +21,7 @@ trait SuggestedSnacksComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
   }
 }
 
-class SuggestedSnacksDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, snacksDao: SnacksDAO)
+class SuggestedSnacksDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, snacksDao: ServiceSnacksDAO)
   extends SuggestedSnacksComponent
   with HasDatabaseConfigProvider[JdbcProfile] {
 

@@ -1,3 +1,5 @@
+'use strict';
+
 $(function() {
     // set the starting vote counter
     setVotesCounter(remainingVotes());

@@ -4,7 +4,7 @@ import java.util.Calendar
 import javax.inject.Inject
 
 import dao.SuggestedSnacksDAO
-import dao.SnacksDAO
+import dao.ServiceSnacksDAO
 import javax.inject.Inject
 
 import models.{ServiceSnack, SnackDetailed, SuggestedSnack}
@@ -24,12 +24,12 @@ import com.github.nscala_time.time.Imports._
 import scala.util.{Failure, Success, Try}
 
 
-class Application @Inject()(snacksDao: SnacksDAO, suggestedSnacksDao: SuggestedSnacksDAO) extends Controller {
+class Application @Inject()(serviceSnackDao: ServiceSnacksDAO, suggestedSnacksDao: SuggestedSnacksDAO) extends Controller {
 
   def index = Action.async { request =>
     for {
       detailedTry <- suggestedSnacksDao.joinSnacks()
-      snacksTry <- snacksDao.all()
+      snacksTry <- serviceSnackDao.all()
     } yield { (detailedTry, snacksTry) match {
         case (Success(detailed), Success(snacks)) => {
           // json web service succeeded
@@ -50,7 +50,7 @@ class Application @Inject()(snacksDao: SnacksDAO, suggestedSnacksDao: SuggestedS
 
   def shoppinglist = Action.async {
     for {
-      snacksTry <- snacksDao.all()
+      snacksTry <- serviceSnackDao.all()
       suggestedSnacksTry <- suggestedSnacksDao.joinSnacks()
     } yield (snacksTry, suggestedSnacksTry) match {
       case (Success(snacks), Success(suggestedSnacks)) => {
@@ -68,8 +68,17 @@ class Application @Inject()(snacksDao: SnacksDAO, suggestedSnacksDao: SuggestedS
   }
 
   def suggestions = Action.async {
-    Future {
-      Ok(views.html.suggestions())
+    for {
+      serviceSnacksTry <- serviceSnackDao.all()
+      suggestedSnacks <- suggestedSnacksDao.all()
+    } yield serviceSnacksTry match {
+      case Success(serviceSnacks) => {
+        val suggestedIds = suggestedSnacks.map(s => s.id).toSet
+        val suggestable = serviceSnacks.filter(s => s.optional && !suggestedIds(s.id))
+        val names = suggestable.map(s => s.name)
+        Ok(views.html.suggestions(names))
+      }
+      case Failure(e) => Ok("Web service down for maintenance. Please come back later.")
     }
   }
 
