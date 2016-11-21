@@ -2,16 +2,20 @@
 
 $('#submit_form').on('submit', function(e) {
     e.preventDefault();
-    console.log('sdfasd')
     $.ajax({
         url: '/snacks/create',
         method: "post",
+        dataType: "json",
         data: {
-            "name": $('#suggestionInput'),
-            "location": $('#suggestionLocation')
+            "name": $('#suggestionInput').val(),
+            "location": $('#suggestionLocation').val()
         }
-    }).then((data) => {
-        console.log('sadfas')
-       console.log(data);
+    }).then(data => {
+        if (data.error) {
+            alert('Cannot suggest: ' + data.error);
+        }
+        else {
+            window.location = "/";
+        }
     })
 });

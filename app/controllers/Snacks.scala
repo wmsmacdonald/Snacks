@@ -3,6 +3,7 @@ package controllers
 import javax.inject.Inject
 
 import dao.{ServiceSnacksDAO, SuggestedSnacksDAO}
+import models.ServiceSnack
 import play.api.libs.json.{JsBoolean, JsObject, JsString}
 import play.api.mvc.{Action, Controller, Cookie}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -33,21 +34,15 @@ class Snacks @Inject()(serviceSnacksDao: ServiceSnacksDAO, suggestedSnacksDao: S
     }
   }
 
-  def create = Action.async { request =>
-    val name = request.body.asFormUrlEncoded.get("name").map(_.head).toString()
-    val location = request.body.asFormUrlEncoded.get("location").map(_.head).toString()
-    serviceSnacksDao.all().map({
-      case Success(serviceSnacks) => {
-        val names = serviceSnacks.map(s => s.name).toSet
-        if (names(name)) {
-          Ok("")
-        }
-        else {
-          println("asdfas")
-          Ok("")
-        }
-      }
-      case Failure(e) => Ok("bad")
+  def create = Action.async { implicit request =>
+    val name = request.body.asFormUrlEncoded.get("name").head
+    val location = request.body.asFormUrlEncoded.get("location").head
+    serviceSnacksDao.create(name, location).map({
+      case Left(snack) => suggestedSnacksDao.insert().map(suggestedSnacks => {
+         val suggestedSnackIds = suggestedSnacks.map(_.id).toSet
+         Ok(JsObject(Map("error" -> JsBoolean(false))))
+      })
+      case Right(error) => Ok(JsObject(Map("error" -> JsString(error))))
     })
   }
 }
