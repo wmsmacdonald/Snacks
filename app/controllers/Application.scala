@@ -1,27 +1,15 @@
 package controllers
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import javax.inject.Inject
 
 import dao.SuggestedSnacksDAO
 import dao.ServiceSnacksDAO
 import javax.inject.Inject
 
-import models.{ServiceSnack, SnackDetailed, SuggestedSnack}
-import play.api.data.Form
-import play.api.data.Forms.mapping
-import play.api.data.Forms.text
-
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.Action
 import play.api.mvc.Controller
-import play.api.libs.json._
-import play.api.mvc.Cookie
 import com.github.nscala_time.time.Imports._
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{Failure, Success}
 
 
 class Application @Inject()(serviceSnackDao: ServiceSnacksDAO, suggestedSnacksDao: SuggestedSnacksDAO) extends Controller {

@@ -3,6 +3,8 @@ import scala.concurrent.Future
 import javax.inject.Inject
 
 import models.{ServiceSnack, SnackDetailed, SuggestedSnack}
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -30,6 +32,22 @@ class SuggestedSnacksDAO @Inject()(protected val dbConfigProvider: DatabaseConfi
   val suggestedSnacks = TableQuery[SuggestedSnacks]
 
   def all(): Future[Seq[SuggestedSnack]] = db.run(suggestedSnacks.result)
+
+  def suggest(id: Int): Future[Unit] = {
+    val format = DateTimeFormat.forPattern("MM-dd-yyyy")
+    val today = format.print(new LocalDate())
+    val suggestedSnack = SuggestedSnack(id, today, 0)
+    db.run((suggestedSnacks += suggestedSnack).asTry).map({
+      case Success(_) => ()
+      case Failure(e) => this.update(suggestedSnack)
+    })
+  }
+
+  def update(suggestedSnack: SuggestedSnack) = {
+    val q = for { s <- suggestedSnacks if s.id === suggestedSnack.id } yield (s.dateSuggested, s.votes)
+    val action = q.update((suggestedSnack.lastSuggested, suggestedSnack.votes))
+    db.run(action)
+  }
 
   def vote(id: Int) = {
     val a = sqlu"""UPDATE SUGGESTED_SNACKS SET VOTES = VOTES + 1 WHERE id=${id}"""

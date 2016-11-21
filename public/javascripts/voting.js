@@ -6,9 +6,11 @@ $(function() {
 
     // get only buttons for snacks that have been voted
     $('.vote_button').filter(function() {
-        let id = $(this).data('id');
+        let id = $(this).data('id').toString();
         let voted = getVoted();
-        return voted.indexOf(id) !== 1;
+        return voted === undefined
+            ? false
+            : getVoted().indexOf(id) !== -1;
     }).each(function() {
         $(this).children().first().removeClass('icon-check_noVote').addClass('icon-check_voted');
     });
@@ -24,7 +26,7 @@ $(function() {
                 $(this).find('i').removeClass('icon-check_noVote');
                 $(this).find('i').addClass('icon-check_voted');
                 $(this).parent().prev().html((i, votes) => parseInt(votes) + 1);
-                decrementVoteCounter(document.cookie);
+                decrementVoteCounter();
             }
         })
     });
@@ -53,11 +55,11 @@ $(function() {
         let cookie = getCookie('votedFor');
         return cookie === undefined
             ? undefined
-            : cookie.split(',')
+            : cookie.split(':')
     }
 
     function decrementVoteCounter() {
-        setVotesCounter(remainingVotes() - 1);
+        setVotesCounter(remainingVotes());
     }
 
     function getCookie(name) {
