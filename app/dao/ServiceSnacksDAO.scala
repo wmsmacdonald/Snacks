@@ -12,6 +12,8 @@ import scala.util.{Failure, Success, Try}
 
 class ServiceSnacksDAO @Inject()(ws: WSClient) {
   implicit val context = play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+  /** returns all snacks from the web service **/
   def all(): Future[Try[Seq[ServiceSnack]]] = {
     val request: WSRequest = ws.url("https://api-snacks.nerderylabs.com/v1/snacks/")
       .withQueryString("ApiKey" -> "6e766c67-4293-4004-8268-50855f355445")
@@ -23,6 +25,7 @@ class ServiceSnacksDAO @Inject()(ws: WSClient) {
     }
   }
 
+  /** sends post request to service to create a snack */
   def create(name: String, location: String): Future[Either[ServiceSnack, String]] = {
     val json = JsObject(Map("name" -> JsString(name), "location" -> JsString(location)))
 

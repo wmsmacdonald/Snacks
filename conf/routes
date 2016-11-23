@@ -5,7 +5,8 @@
 # Home page
 GET     /                           controllers.Application.index
 GET     /snacks/vote                controllers.Snacks.vote
-POST    /snacks/create              controllers.Snacks.create
+POST    /snacks/suggest_existing    controllers.Snacks.suggestExisting
+POST    /snacks/suggest_new         controllers.Snacks.suggestNew
 GET     /shoppinglist               controllers.Application.shoppinglist
 GET     /suggestions                controllers.Application.suggestions
 

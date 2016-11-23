@@ -1,4 +1,4 @@
-@(suggestionNames: Seq[String])
+@(serviceSnacks: Seq[ServiceSnack])
 <!doctype html>
 <html class="no-js" lang="en-us">
 <head>
@@ -68,8 +68,8 @@
                                     </label>
                                 </div>
                                 <select name="snackOptions" id="snackOptions">
-                                    @for(name <- suggestionNames) {
-                                        <option value="@name">@name</option>
+                                    @for(s <- serviceSnacks) {
+                                        <option value="@s.id">@s.name</option>
                                     }
                                 </select>
                             </div>
@@ -100,6 +100,6 @@
     </div>
     <!-- /wrapper -->
     <script type="text/javascript" src="/assets/javascripts/jquery-1.9.0.min.js"></script>
-    <script type="text/javascript" src="/assets/javascripts/submit.js"></script>
+    <script type="text/javascript" src="/assets/javascripts/suggest.js"></script>
 </body>
 </html>
