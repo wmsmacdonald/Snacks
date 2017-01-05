@@ -15,6 +15,7 @@ import scala.util.{Failure, Success, Try}
 trait SuggestedSnacksComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
   import driver.api._
 
+  // represents table in SQLite
   class SuggestedSnacks(tag: Tag) extends Table[SuggestedSnack](tag, "SUGGESTED_SNACKS") {
     def id = column[Int]("ID")
     def dateSuggested = column[String]("LAST_SUGGESTED")
@@ -38,7 +39,7 @@ class SuggestedSnacksDAO @Inject()(protected val dbConfigProvider: DatabaseConfi
   def suggest(id: Int) = {
     val format = DateTimeFormat.forPattern("MM-dd-yyyy")
     val today = format.print(new LocalDate())
-    val suggestedSnack = SuggestedSnack(id, today, 0)
+    val suggestedSnack = SuggestedSnack(id, today, 0) // number of votes is zero
     db.run((suggestedSnacks += suggestedSnack).asTry).map({
       case Success(r) => r
       case Failure(e) => this.update(suggestedSnack)
