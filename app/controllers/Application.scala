@@ -39,7 +39,7 @@ class Application @Inject()(serviceSnackDao: ServiceSnacksDAO, suggestedSnacksDa
     }
   }
 
-  /** returns Future of view that shows snacks that should be bought this month **/
+  /** returns view that shows snacks that should be bought this month **/
   def shoppinglist = Action.async {
     for {
       suggestedSnacksTry <- suggestedSnacksDao.joinServiceSnacks()
@@ -62,7 +62,7 @@ class Application @Inject()(serviceSnackDao: ServiceSnacksDAO, suggestedSnacksDa
     }
   }
 
-  /** returns Future of view that shows the suggestions submission page */
+  /** returns view that shows the suggestions submission page */
   def suggestions = Action.async {
     for {
       serviceSnacksTry <- serviceSnackDao.all()
