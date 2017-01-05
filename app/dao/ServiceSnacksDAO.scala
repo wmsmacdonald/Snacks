@@ -15,8 +15,8 @@ class ServiceSnacksDAO @Inject()(ws: WSClient) {
 
   /** returns all snacks from the web service **/
   def all(): Future[Try[Seq[ServiceSnack]]] = {
-    val request: WSRequest = ws.url("https://api-snacks.nerderylabs.com/v1/snacks/")
-      .withQueryString("ApiKey" -> "6e766c67-4293-4004-8268-50855f355445")
+    val request: WSRequest = ws.url("https://api-snacks.example.com/v1/snacks/")
+      .withQueryString("ApiKey" -> "REDACTED")
 
     implicit val snackReads = Json.reads[ServiceSnack]
     for (response <- request.get()) yield response.json.validate[Seq[ServiceSnack]] match {
@@ -30,8 +30,8 @@ class ServiceSnacksDAO @Inject()(ws: WSClient) {
     val json = JsObject(Map("name" -> JsString(name), "location" -> JsString(location)))
 
     val request: WSRequest = (
-      ws.url("https://api-snacks.nerderylabs.com/v1/snacks/")
-      withQueryString("ApiKey" -> "6e766c67-4293-4004-8268-50855f355445")
+      ws.url("https://api-snacks.example.com/v1/snacks/")
+      withQueryString("ApiKey" -> "REDACTED")
       withHeaders("Content-Type" -> "application/json")
     )
 
