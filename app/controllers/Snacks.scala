@@ -19,6 +19,7 @@ class Snacks @Inject()(serviceSnacksDao: ServiceSnacksDAO, suggestedSnacksDao: S
   def vote = Action.async { request =>
     val id: Int = request.queryString("id").head.toInt
 
+    // snacks that user has already voted for
     val votedFor: Set[Int] = request.cookies.get("votedFor") match {
       case Some(cookie) => cookie.value.split(":").map(s => s.toInt).toSet
       case None => Set()
@@ -27,19 +28,19 @@ class Snacks @Inject()(serviceSnacksDao: ServiceSnacksDAO, suggestedSnacksDao: S
     // already voted for this snack
     if (votedFor(id)) {
       val errorJson = JsObject(Map("error" -> JsString("you already voted for this snack.")))
-      Future (Ok(errorJson))
+      Future.successful(Ok(errorJson))
     }
     // have used all votes
     else if (votedFor.size >= 3) {
       val errorJson = JsObject(Map("error" -> JsString("you have no remaining votes.")))
-      Future (Ok(errorJson))
+      Future.successful(Ok(errorJson))
     }
     else {
       val a = suggestedSnacksDao.vote(id)
       val successJson = JsObject(Map("error" -> JsBoolean(false)))
-
+      // add snack id to list of snacks voted for
       val newVotedFor = votedFor + id
-      // return status with update cookie
+      // return status with updated cookie
       a.map(r => Ok(successJson).withCookies(Cookie("votedFor", newVotedFor.mkString(":"), httpOnly = false)))
     }
   }
@@ -54,6 +55,7 @@ class Snacks @Inject()(serviceSnacksDao: ServiceSnacksDAO, suggestedSnacksDao: S
   def suggestNew = Action.async { implicit request =>
     val name = request.body.asFormUrlEncoded.get("name").head
     val location = request.body.asFormUrlEncoded.get("location").head
+    // use the web service to create an entirely new snack
     serviceSnacksDao.create(name, location).flatMap({
       case Left(snack) => {
         suggestedSnacksDao.suggest(snack.id).map(r => Ok(JsObject(Map("error" -> JsBoolean(false)))))
